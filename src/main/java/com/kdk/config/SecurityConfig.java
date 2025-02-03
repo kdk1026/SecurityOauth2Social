@@ -58,13 +58,7 @@ public class SecurityConfig {
 							.userService(this.customOAuth2UserService())
 					)
 			)
-			// 로그아웃은 formLogin이 아니라 그런지 404 에러
-//			.logout((logout) ->
-//				logout
-//					.logoutUrl("/logout")
-//					.invalidateHttpSession(true)
-//					.logoutSuccessUrl("/login")
-//			)
+			// 로그아웃은 formLogin이 아니라 그런지 404 에러, Controller에서 처리
 			.sessionManagement((sessionManagement) ->
 				sessionManagement
 					.sessionConcurrency((sessionConcurrency) ->
