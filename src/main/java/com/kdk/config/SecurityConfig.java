@@ -59,15 +59,7 @@ public class SecurityConfig {
 					)
 			)
 			// 로그아웃은 formLogin이 아니라 그런지 404 에러, Controller에서 처리
-			.sessionManagement((sessionManagement) ->
-				sessionManagement
-					.sessionConcurrency((sessionConcurrency) ->
-						sessionConcurrency
-							.maximumSessions(1)
-							.maxSessionsPreventsLogin(true)
-							.expiredUrl("/login")
-					)
-			)
+			// sessionManagement 는 로그아웃을 했음에도 사라지지 않아서 제거함
 			.headers((headers) ->
 				headers
 					.httpStrictTransportSecurity(this.hstsCustomizer())
@@ -107,12 +99,8 @@ public class SecurityConfig {
 	                } else if ( registrationId.equals("kakao") ) {
 	                    @SuppressWarnings("unchecked")
 						Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-	                    if ( kakaoAccount != null ) {
-	                    	customAttributes.put("name", kakaoAccount.get("profile_nickname"));
-	                    	customAttributes.put("email", kakaoAccount.get("account_email"));
-	                    } else {
-	                    	log.warn("카카오 사용자 정보에서 kakao_account를 찾을 수 없습니다.");
-	                    }
+	                    customAttributes.put("name", kakaoAccount.get("profile_nickname"));
+                    	customAttributes.put("email", kakaoAccount.get("email"));
 	                } else if ( registrationId.equals("facebook") ) {
 	                	customAttributes.put("name", attributes.get("name"));
                         customAttributes.put("email", attributes.get("email"));

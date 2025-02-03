@@ -105,7 +105,7 @@ See here for more details: http://gordondickens.com/wordpress/2013/03/27/sawing-
     <logger name="org.thymeleaf.spring5" level="error" />
     <logger name="org.thymeleaf.templateresolver" level="error" />
 
-    <!-- 시큐리티 로거 레벨 설정 -->
+    <!-- 시큐리티 로거 레벨 설정 (debug로 파악이 안되는 경우, trace로 변경) -->
 	<logger name="org.springframework.security" level="${PACKAGE_LEVEL}" />
 
 	<!-- Package -->
