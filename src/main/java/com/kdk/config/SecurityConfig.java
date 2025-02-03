@@ -59,7 +59,15 @@ public class SecurityConfig {
 					)
 			)
 			// 로그아웃은 formLogin이 아니라 그런지 404 에러, Controller에서 처리
-			// sessionManagement 는 로그아웃을 했음에도 사라지지 않아서 제거함
+			.sessionManagement((sessionManagement) ->
+				sessionManagement
+					.sessionConcurrency((sessionConcurrency) ->
+						sessionConcurrency
+							.maximumSessions(1)
+							.maxSessionsPreventsLogin(false)
+							.expiredUrl("/login")
+					)
+			)
 			.headers((headers) ->
 				headers
 					.httpStrictTransportSecurity(this.hstsCustomizer())
