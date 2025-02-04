@@ -99,23 +99,32 @@ public class SecurityConfig {
 
 			        Map<String, Object> customAttributes = new HashMap<>();
 
-	                if ( registrationId.equals("naver") ) {
-	                    @SuppressWarnings("unchecked")
-						Map<String, Object> response = (Map<String, Object>) attributes.get("response");
-	                    customAttributes.put("name", response.get("name"));
-	                    customAttributes.put("email", response.get("email"));
-	                } else if ( registrationId.equals("kakao") ) {
-	                    @SuppressWarnings("unchecked")
-						Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
-	                    customAttributes.put("name", kakaoAccount.get("profile_nickname"));
-                    	customAttributes.put("email", kakaoAccount.get("email"));
-	                } else if ( registrationId.equals("facebook") ) {
-	                	customAttributes.put("name", attributes.get("name"));
-                        customAttributes.put("email", attributes.get("email"));
-	                } else if ( registrationId.equals("google") ) {
-	                	customAttributes.put("name", attributes.get("name"));
-                        customAttributes.put("email", attributes.get("email"));
-	                }
+			        switch (registrationId) {
+				        case "naver":
+				            @SuppressWarnings("unchecked")
+				            Map<String, Object> naverResponse = (Map<String, Object>) attributes.get("response");
+				            customAttributes.put("name", naverResponse.get("name"));
+				            customAttributes.put("email", naverResponse.get("email"));
+				            break;
+				        case "kakao":
+				            @SuppressWarnings("unchecked")
+				            Map<String, Object> kakaoAccount = (Map<String, Object>) attributes.get("kakao_account");
+				            @SuppressWarnings("unchecked")
+				            Map<String, Object> profile = (Map<String, Object>) kakaoAccount.get("profile");
+				            customAttributes.put("name", profile.get("nickname"));
+				            customAttributes.put("email", kakaoAccount.get("email"));
+				            break;
+				        case "facebook":
+				            customAttributes.put("name", attributes.get("name"));
+				            customAttributes.put("email", attributes.get("email"));
+				            break;
+				        case "google":
+				            customAttributes.put("name", attributes.get("name"));
+				            customAttributes.put("email", attributes.get("email"));
+				            break;
+				        default:
+				            throw new IllegalArgumentException("Invalid registration ID: " + registrationId);
+				    }
 
 	                return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority("ROLE_USER")), customAttributes, "email");
 
